@@ -18,6 +18,17 @@ services:
     networks:
       - http-server-projeto-korp-network
 
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - http-server-projeto-korp-network
+
+
 networks:
   http-server-projeto-korp-network:
     external: true

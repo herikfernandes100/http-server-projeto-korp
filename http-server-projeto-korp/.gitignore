@@ -1,0 +1,11 @@
+# Go binaries
+app/http-server-projeto-korp
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
