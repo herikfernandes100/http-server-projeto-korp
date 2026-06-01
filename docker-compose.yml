@@ -3,8 +3,11 @@ services:
     build:
       context: ./app
     container_name: http-server-projeto-korp
+    ports:
+      - "8080:8080"
     networks:
       - http-server-projeto-korp-network
+    
 
   nginx:
     image: nginx:latest
@@ -25,6 +28,17 @@ services:
       - "9090:9090"
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - http-server-projeto-korp-network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
     networks:
       - http-server-projeto-korp-network
 

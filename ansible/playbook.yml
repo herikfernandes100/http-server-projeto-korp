@@ -1,0 +1,44 @@
+---
+- name: Provisionar ambiente Projeto Korp
+  hosts: local
+  become: true
+
+  tasks:
+
+    - name: Verificar se Docker está instalado
+      ansible.builtin.command: docker --version
+      register: docker_version
+      changed_when: false
+
+    - name: Exibir versão do Docker
+      ansible.builtin.debug:
+        var: docker_version.stdout
+
+    - name: Criar rede Docker do projeto
+      ansible.builtin.command: docker network create http-server-projeto-korp-network
+      register: network_result
+      failed_when: false
+      changed_when: "'already exists' not in network_result.stderr"
+
+    - name: Executar Docker Compose
+      ansible.builtin.command: docker compose up -d --build
+      args:
+        chdir: /home/herik/GitHub/http-server-projeto-korp
+      register: compose_result
+      changed_when: true
+
+    - name: Validar endpoint da aplicação
+      ansible.builtin.uri:
+        url: http://localhost/projeto-korp
+        method: GET
+        status_code: 200
+        return_content: true
+      register: api_response
+      retries: 5
+      delay: 10
+      until: api_response.status == 200
+
+    - name: Exibir resposta da aplicação
+      ansible.builtin.debug:
+        msg: "{{ api_response.content }}"
+        

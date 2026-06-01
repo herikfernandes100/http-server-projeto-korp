@@ -1,0 +1,101 @@
+{
+  "title": "HTTP Server Korp - Production Dashboard",
+  "timezone": "browser",
+  "schemaVersion": 38,
+  "version": 1,
+  "refresh": "5s",
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Total Requests",
+      "targets": [
+        {
+          "expr": "sum(http_requests_total)",
+          "refId": "A"
+        }
+      ],
+      "gridPos": { "x": 0, "y": 0, "w": 8, "h": 5 }
+    },
+    {
+      "type": "stat",
+      "title": "Requests / 5m",
+      "targets": [
+        {
+          "expr": "increase(http_requests_total[5m])",
+          "refId": "A"
+        }
+      ],
+      "gridPos": { "x": 8, "y": 0, "w": 8, "h": 5 }
+    },
+    {
+      "type": "timeseries",
+      "title": "Request Rate (RPS)",
+      "targets": [
+        {
+          "expr": "rate(http_requests_total[1m])",
+          "refId": "A"
+        }
+      ],
+      "gridPos": { "x": 0, "y": 5, "w": 16, "h": 7 }
+    },
+    {
+      "type": "timeseries",
+      "title": "Requests por Endpoint",
+      "targets": [
+        {
+          "expr": "sum by (endpoint) (http_requests_total)",
+          "refId": "A"
+        }
+      ],
+      "gridPos": { "x": 0, "y": 12, "w": 16, "h": 7 }
+    },
+    {
+      "type": "timeseries",
+      "title": "Go Memory Usage (Heap)",
+      "targets": [
+        {
+          "expr": "go_memstats_heap_inuse_bytes",
+          "refId": "A"
+        }
+      ],
+      "gridPos": { "x": 0, "y": 19, "w": 8, "h": 6 }
+    },
+    {
+      "type": "timeseries",
+      "title": "Goroutines",
+      "targets": [
+        {
+          "expr": "go_goroutines",
+          "refId": "A"
+        }
+      ],
+      "gridPos": { "x": 8, "y": 19, "w": 8, "h": 6 }
+    },
+    {
+      "type": "timeseries",
+      "title": "CPU Time",
+      "targets": [
+        {
+          "expr": "rate(process_cpu_seconds_total[1m])",
+          "refId": "A"
+        }
+      ],
+      "gridPos": { "x": 0, "y": 25, "w": 8, "h": 6 }
+    },
+    {
+      "type": "timeseries",
+      "title": "HTTP Scrape Health",
+      "targets": [
+        {
+          "expr": "up",
+          "refId": "A"
+        }
+      ],
+      "gridPos": { "x": 8, "y": 25, "w": 8, "h": 6 }
+    }
+  ]
+}
